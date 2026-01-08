@@ -43,6 +43,9 @@ body {
 .profile-header {
   background: linear-gradient(135deg, #991b1b, #dc2626);
   background-image: url("CAMSI.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: white;
   text-align: center;
   padding: 40px 20px;
