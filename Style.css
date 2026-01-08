@@ -7,7 +7,7 @@
 
 body {
   background: linear-gradient(135deg, #0f172a, #1e293b);
-  background-image: url("CAMSI.png");
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -42,6 +42,7 @@ body {
 /* HEADER */
 .profile-header {
   background: linear-gradient(135deg, #991b1b, #dc2626);
+  background-image: url("CAMSI.png");
   color: white;
   text-align: center;
   padding: 40px 20px;
