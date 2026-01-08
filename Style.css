@@ -186,3 +186,73 @@ body {
   }
 }
 
+/* PHONE MOCKUP WRAPPER */
+.phone-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* PHONE FRAME */
+.phone-frame {
+  width: 360px;
+  height: 720px;
+  background: #ffffff;
+  border-radius: 40px;
+  border: 12px solid #000;
+  position: relative;
+  overflow: hidden;
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.35);
+}
+
+/* NOTCH */
+.phone-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 28px;
+  background: #000;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  z-index: 5;
+}
+
+/* AVATAR FLOATING */
+.avatar-wrapper {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  object-fit: cover;
+  background: #fff;
+}
+
+/* CONTENT CENTER */
+.phone-content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* MAIN LOGO */
+.main-logo {
+  width: 230px;
+  height: 230px;
+  object-fit: contain;
+}
+
