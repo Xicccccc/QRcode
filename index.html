@@ -5,19 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Professional Digital ID</title>
   <link rel="stylesheet" href="Style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
 <main class="profile-wrapper">
   <section class="profile-card">
 
-    <!-- HEADER -->
-  <header class="profile-header">
-
-  <img src="CAMSI.png" alt="CAMSI Logo" class="header-logo">
+   <header class="profile-header">
 
   <div class="avatar-container">
-    <img src="IMG.jpeg" alt="Profile Photo" class="avatar">
+    <img src="IMAHE.jpeg" alt="Profile Photo" class="avatar">
   </div>
 
   <h1>Erick Yosorez Villafuerte</h1>
@@ -25,7 +24,8 @@
 
 </header>
 
-    <!-- CONTACT -->
+
+    
     <section class="profile-section">
       <h2>Contact Information</h2>
 
@@ -40,7 +40,7 @@
       </div>
     </section>
 
-    <!-- GOVERNMENT IDS -->
+    
     <section class="profile-section sensitive">
       <h2>Government IDs</h2>
 
@@ -64,9 +64,110 @@
         <span>121182442001</span>
       </div>
     </section>
+      <button class="SaveContacts" onclick="saveContact(this)">
+      <span class="btn-text">Save Contacts</span>
+      <span class="btn-check">✓</span>
+</button>
+
+      <button class="SaveContacts note" onclick="saveAsNote()">
+  <span class="btn-text">Save as Note</span>
+</button>
 
   </section>
 </main>
+
+<script>
+const CONTACT_STORAGE_KEY = "contact_saved_v1";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.querySelector(".SaveContacts");
+  if (!button) return;
+
+  if (localStorage.getItem(CONTACT_STORAGE_KEY) === "true") {
+    button.classList.add("saved");
+    button.querySelector(".btn-text").textContent = "Saved to Contacts";
+    button.disabled = true;
+    button.style.cursor = "default";
+  }
+});
+
+function saveContact(button) {
+  if (button.classList.contains("saved")) return;
+
+  const fullName = "Erick Yosorez Villafuerte";
+  const phone = "09633621187";
+  const email = "eyv.addleman@gmail.com";
+  const title = "HR Specialist";
+
+  const vCard = `
+BEGIN:VCARD
+VERSION:3.0
+N:Villafuerte;Erick Yosorez;;;
+FN:${fullName}
+TITLE:${title}
+TEL;TYPE=CELL:${phone}
+EMAIL:${email}
+END:VCARD
+`.trim();
+
+  const blob = new Blob([vCard], { type: "text/vcard;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "Erick_Villafuerte.vcf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  // Persist saved state
+  localStorage.setItem(CONTACT_STORAGE_KEY, "true");
+
+  setTimeout(() => {
+    button.classList.add("saved");
+    button.querySelector(".btn-text").textContent = "Saved to Contacts";
+    button.disabled = true;
+    button.style.cursor = "default";
+  }, 400);
+}
+
+function saveAsNote() {
+  const noteText = `
+Erick Yosorez Villafuerte
+HR Specialist
+
+Mobile: 0963-362-1187
+Email: eyv.addleman@gmail.com
+
+SSS: 3462641350
+TIN: 397420677000
+PhilHealth: 210254192952
+Pag-IBIG: 121182442001
+`.trim();
+
+  const blob = new Blob([noteText], { type: "text/plain" });
+  const file = new File([blob], "Contact_Info.txt", { type: "text/plain" });
+
+  if (navigator.share) {
+    navigator.share({
+      title: "Contact Information",
+      text: noteText,
+      files: [file]
+    }).catch(() => {});
+  } else {
+    const textarea = document.createElement("textarea");
+    textarea.value = noteText;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    alert("Copied. Paste into Notes.");
+  }
+}
+</script>
+
+
 
 </body>
 </html>
