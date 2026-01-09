@@ -29,7 +29,12 @@
 
     <div class="info-row">
         <span>Email</span>
-        <a>eyv.addleman@gmail.com</a>
+        <a href="mailto:eyv.addleman@gmail.com">eyv.addleman@gmail.com</a>
+    </div>
+
+    <div class="info-row">
+        <span>Facebook</span>
+        <a href="https://www.facebook.com/erick.villafuerte.790">Erick Yosorez Villafuerte</a>
     </div>
     </section>
 
@@ -70,6 +75,14 @@
   </main>
 
 <script>
+
+
+const header = document.querySelector(".profile-header");
+window.addEventListener("scroll", () => {
+  header.classList.toggle("is-sticky", window.scrollY > 10);
+});
+
+  
 const CONTACT_STORAGE_KEY = "contact_saved_v1";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -114,7 +127,7 @@ END:VCARD
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 
-  // Persist saved state
+ 
   localStorage.setItem(CONTACT_STORAGE_KEY, "true");
 
   setTimeout(() => {
