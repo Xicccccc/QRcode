@@ -6,38 +6,31 @@
   <title>Professional Digital ID</title>
   <link rel="stylesheet" href="Style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
-<main class="profile-wrapper">
-  <section class="profile-card">
+    <main class="profile-wrapper">
+        <section class="profile-card">
+          <header class="profile-header">
+        <div class="avatar-container">
+          <img src="IMAHE.jpeg" alt="Profile Photo" class="avatar">
+        </div>
+          <h1>Erick Yosorez Villafuerte</h1>
+         <span class="role">HR Specialist</span>
 
-   <header class="profile-header">
-
-  <div class="avatar-container">
-    <img src="IMAHE.jpeg" alt="Profile Photo" class="avatar">
-  </div>
-
-  <h1>Erick Yosorez Villafuerte</h1>
-  <span class="role">HR Specialist</span>
-
-</header>
-
-
-    
+  </header>
     <section class="profile-section">
       <h2>Contact Information</h2>
 
-      <div class="info-row">
+    <div class="info-row">
         <span>Mobile</span>
         <a href="tel:09633621187">0963-362-1187</a>
-      </div>
+    </div>
 
-      <div class="info-row">
+    <div class="info-row">
         <span>Email</span>
         <span>eyv.addleman@gmail.com</span>
-      </div>
+    </div>
     </section>
 
     
@@ -64,17 +57,17 @@
         <span>121182442001</span>
       </div>
     </section>
+
       <button class="SaveContacts" onclick="saveContact(this)">
-      <span class="btn-text">Save Contacts</span>
-      <span class="btn-check">✓</span>
-</button>
+        <span class="btn-text">Save Contacts</span>
+        <span class="btn-check">✓</span>
+      </button>
 
       <button class="SaveContacts note" onclick="saveAsNote()">
-  <span class="btn-text">Save as Note</span>
-</button>
-
-  </section>
-</main>
+      <span class="btn-text">Save as Note</span>
+      </button>
+    </section>
+  </main>
 
 <script>
 const CONTACT_STORAGE_KEY = "contact_saved_v1";
@@ -166,8 +159,5 @@ Pag-IBIG: 121182442001
   }
 }
 </script>
-
-
-
 </body>
 </html>
