@@ -24,18 +24,19 @@
       <header class="profile-header">
         <h1>Click Aces Marketing Solutions Incorporated</h1>
         <div class="avatar-container">
-          <img src="IMAHE.jpeg" alt="Profile Photo" class="avatar">
+          <img src="IMAHE.jpeg" alt="Profile Photo" class="avatar" id="profilePic">
         </div>
-        <h1>Erick Yosorez Villafuerte</h1>
-        <span class="role">HR Specialist</span>
+        <h1 id="fullName">Erick Yosorez Villafuerte</h1>
+        <span class="role" id="role">HR Specialist</span>
       </header>
 
       <!-- Contact Info -->
       <section class="profile-section">
         <h2>Contact Information</h2>
-        <div class="info-row"><span>Mobile</span><a href="tel:09633621187">0963-362-1187</a></div>
-        <div class="info-row"><span>Email</span><a href="mailto:eyv.addleman@gmail.com">eyv.addleman@gmail.com</a></div>
-        <div class="info-row"><span>Facebook</span><a href="https://www.facebook.com/erick.villafuerte.790">Erick Yosorez Villafuerte</a></div>
+        <div class="info-row"><span>Mobile</span><a href="tel:09633621187" id="mobile">0963-362-1187</a></div>
+        <div class="info-row"><span>Email</span><a href="mailto:eyv.addleman@gmail.com" id="email">eyv.addleman@gmail.com</a></div>
+        <div class="info-row"><span>Facebook</span><a href="https://www.facebook.com/erick.villafuerte.790" id="facebook">Erick Yosorez Villafuerte</a></div>
+        <div class="info-row"><span>Viber</span><a href="tel:09633621187" id="viber">0963-362-1187</a></div>
       </section>
 
       <!-- Unlock Government IDs -->
@@ -46,10 +47,10 @@
       <!-- Government IDs -->
       <section class="profile-section sensitive locked" id="govSection">
         <h2>Government IDs</h2>
-        <div class="info-row"><span>SSS</span><span>3462641350</span></div>
-        <div class="info-row"><span>TIN</span><span>397420677000</span></div>
-        <div class="info-row"><span>PhilHealth</span><span>210254192952</span></div>
-        <div class="info-row"><span>Pag-IBIG</span><span>121182442001</span></div>
+        <div class="info-row"><span>SSS</span><span id="sss">3462641350</span></div>
+        <div class="info-row"><span>TIN</span><span id="tin">397420677000</span></div>
+        <div class="info-row"><span>PhilHealth</span><span id="philhealth">210254192952</span></div>
+        <div class="info-row"><span>Pag-IBIG</span><span id="pagibig">121182442001</span></div>
       </section>
 
       <!-- Action Buttons -->
@@ -136,24 +137,19 @@ function verifyPin() {
     govSection.classList.add("gov-glow");
     setTimeout(() => govSection.classList.remove("gov-glow"), 1000);
 
-    // Hide unlock button
     const pinButton = document.querySelector(".pin-btn");
     if (pinButton) pinButton.style.display = "none";
 
-    // Show unlock message
     showGovMessage("Government IDs are now visible");
-
     closePinModal();
     attempts = 0;
   } else {
     attempts++;
     error.textContent = `Incorrect PIN. Try again (${MAX_ATTEMPTS - attempts} left)`;
     error.style.display = "block";
-
     modal.classList.remove("shake");
     void modal.offsetWidth;
     modal.classList.add("shake");
-
     input.value = "";
     input.focus();
   }
@@ -164,16 +160,13 @@ function showGovMessage(message) {
   const msg = document.createElement("div");
   msg.className = "gov-message";
   msg.textContent = message;
-
   document.body.appendChild(msg);
-
   msg.style.opacity = 0;
   msg.style.transform = "translate(-50%, -50%) scale(0.8)";
   requestAnimationFrame(() => {
     msg.style.opacity = 1;
     msg.style.transform = "translate(-50%, -50%) scale(1)";
   });
-
   setTimeout(() => {
     msg.style.opacity = 0;
     msg.style.transform = "translate(-50%, -50%) scale(0.8)";
@@ -181,65 +174,107 @@ function showGovMessage(message) {
   }, 2000);
 }
 
+// Convert image to Base64
+function imageToBase64(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function() {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      const dataURL = canvas.toDataURL("image/jpeg");
+      const base64 = dataURL.split(",")[1];
+      resolve(base64);
+    };
+    img.onerror = function() { resolve(""); }
+    img.src = url;
+  });
+}
+
 // Save contact as VCF
-function saveContact(button) {
-  if (button.classList.contains("saved")) return;
+async function saveContact(button) {
+  const fullName = document.getElementById("fullName").textContent;
+  const role = document.getElementById("role").textContent;
+  const mobile = document.getElementById("mobile").textContent;
+  const email = document.getElementById("email").textContent;
+  const facebook = document.getElementById("facebook").textContent;
+  const viber = document.getElementById("viber").textContent;
+  const profilePic = document.getElementById("profilePic");
 
-  const vCard = `
-BEGIN:VCARD
+  const base64Image = await imageToBase64(profilePic.src);
+
+  // Include Government IDs if unlocked
+  const govSection = document.getElementById("govSection");
+  let sss = "", tin = "", philhealth = "", pagibig = "";
+  if (!govSection.classList.contains("locked")) {
+    sss = document.getElementById("sss").textContent;
+    tin = document.getElementById("tin").textContent;
+    philhealth = document.getElementById("philhealth").textContent;
+    pagibig = document.getElementById("pagibig").textContent;
+  }
+
+  const vCard = `BEGIN:VCARD
 VERSION:3.0
-N:Villafuerte;Erick Yosorez;;;
-FN:Erick Yosorez Villafuerte
-TITLE:HR Specialist
-TEL;TYPE=CELL:09633621187
-EMAIL:eyv.addleman@gmail.com
-END:VCARD
-`.trim();
+FN:${fullName}
+ORG:${role}
+TEL;TYPE=CELL:${mobile}
+TEL;TYPE=VIBER:${viber}
+EMAIL;TYPE=INTERNET:${email}
+PHOTO;ENCODING=b;TYPE=JPEG:${base64Image}
+NOTE:Facebook: ${facebook}${sss ? `\\nSSS: ${sss}\\nTIN: ${tin}\\nPhilHealth: ${philhealth}\\nPag-IBIG: ${pagibig}` : ""}
+END:VCARD`;
 
-  const blob = new Blob([vCard], { type: "text/vcard;charset=utf-8" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "Erick_Villafuerte.vcf";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const blob = new Blob([vCard], { type: "text/vcard" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${fullName.replace(/\s+/g,'_')}.vcf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
 
   button.classList.add("saved");
-  button.querySelector(".btn-text").textContent = "Saved to Contacts";
+  setTimeout(() => button.classList.remove("saved"), 1500);
 }
 
 // Save as Note
 function saveAsNote() {
-  const noteText = `
-Erick Yosorez Villafuerte
-HR Specialist
-Mobile: 0963-362-1187
-Email: eyv.addleman@gmail.com
+  const fullName = document.getElementById("fullName").textContent;
+  const role = document.getElementById("role").textContent;
+  const mobile = document.getElementById("mobile").textContent;
+  const viber = document.getElementById("viber").textContent;
+  const email = document.getElementById("email").textContent;
+  const facebook = document.getElementById("facebook").textContent;
 
-SSS: 3462641350
-TIN: 397420677000
-PhilHealth: 210254192952
-Pag-IBIG: 121182442001
-`.trim();
+  // Include Government IDs if unlocked
+  const govSection = document.getElementById("govSection");
+  let govInfo = "";
+  if (!govSection.classList.contains("locked")) {
+    const sss = document.getElementById("sss").textContent;
+    const tin = document.getElementById("tin").textContent;
+    const philhealth = document.getElementById("philhealth").textContent;
+    const pagibig = document.getElementById("pagibig").textContent;
+    govInfo = `\nSSS: ${sss}\nTIN: ${tin}\nPhilHealth: ${philhealth}\nPag-IBIG: ${pagibig}`;
+  }
+
+  const noteText = `Name: ${fullName}
+Role: ${role}
+Mobile: ${mobile}
+Viber: ${viber}
+Email: ${email}
+Facebook: ${facebook}${govInfo}`;
 
   const blob = new Blob([noteText], { type: "text/plain" });
-  const file = new File([blob], "Contact_Info.txt", { type: "text/plain" });
-
-  if (navigator.share) {
-    navigator.share({
-      title: "Contact Information",
-      text: noteText,
-      files: [file]
-    }).catch(() => {});
-  } else {
-    const textarea = document.createElement("textarea");
-    textarea.value = noteText;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-    alert("Copied. Paste into Notes.");
-  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${fullName.replace(/\s+/g,'_')}_note.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
 }
 </script>
 </body>
