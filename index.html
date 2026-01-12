@@ -9,169 +9,196 @@
 </head>
 
 <body>
-    <main class="profile-wrapper">
-        <section class="profile-card">
-          <header class="profile-header">
-            <h1>Click Aces Marketing Solutions Incorporated</h1>
+<body>
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-content">
+      <img src="CAMSI.png" alt="Company Logo" class="intro-logo">
+      <h1>Good day!</h1>
+      <p>This is my contact details</p>
+    </div>
+  </div>
+
+  <main class="profile-wrapper">
+    <section class="profile-card">
+      <header class="profile-header">
+        <h1>Click Aces Marketing Solutions Incorporated</h1>
         <div class="avatar-container">
           <img src="IMAHE.jpeg" alt="Profile Photo" class="avatar">
         </div>
-          <h1>Erick Yosorez Villafuerte</h1>
-         <span class="role">HR Specialist</span>
+        <h1>Erick Yosorez Villafuerte</h1>
+        <span class="role">HR Specialist</span>
+      </header>
 
-  </header>
-    <section class="profile-section">
-      <h2>Contact Information</h2>
+      <section class="profile-section">
+        <h2>Contact Information</h2>
+        <div class="info-row">
+          <span>Mobile</span>
+          <a href="tel:09633621187">0963-362-1187</a>
+        </div>
+        <div class="info-row">
+          <span>Email</span>
+          <a href="mailto:eyv.addleman@gmail.com">eyv.addleman@gmail.com</a>
+        </div>
+        <div class="info-row">
+          <span>Facebook</span>
+          <a href="https://www.facebook.com/erick.villafuerte.790">Erick Yosorez Villafuerte</a>
+        </div>
+      </section>
 
-    <div class="info-row">
-        <span>Mobile</span>
-        <a href="tel:09633621187">0963-362-1187</a>
-    </div>
-
-    <div class="info-row">
-        <span>Email</span>
-        <a href="mailto:eyv.addleman@gmail.com">eyv.addleman@gmail.com</a>
-    </div>
-
-    <div class="info-row">
-        <span>Facebook</span>
-        <a href="https://www.facebook.com/erick.villafuerte.790">Erick Yosorez Villafuerte</a>
-    </div>
-    </section>
-
-    
-    <section class="profile-section sensitive">
-      <h2>Government IDs</h2>
-
-      <div class="info-row">
-        <span>SSS</span>
-        <span>3462641350</span>
+      <!-- PIN MODAL -->
+      <div class="pin-overlay" id="pinOverlay">
+        <div class="pin-modal">
+          <h3>Enter 4-Digit PIN</h3>
+          <input type="password" maxlength="4" inputmode="numeric" class="pin-input" id="pinInput" placeholder="••••"/>
+          <p class="pin-error" id="pinError">Incorrect PIN</p>
+          <button class="SaveContacts" onclick="verifyPin()">Unlock</button>
+          <button class="pin-cancel" onclick="closePinModal()">Cancel</button>
+        </div>
       </div>
 
-      <div class="info-row">
-        <span>TIN</span>
-        <span>397420677000</span>
-      </div>
-
-      <div class="info-row">
-        <span>PhilHealth</span>
-        <span>210254192952</span>
-      </div>
-
-      <div class="info-row">
-        <span>Pag-IBIG</span>
-        <span>121182442001</span>
-      </div>
-    </section>
-
-      <button class="SaveContacts" onclick="saveContact(this)">
-        <span class="btn-text">Save Contacts</span>
-        <span class="btn-check">✓</span>
+      <!-- Unlock Button -->
+      <button class="SaveContacts pin-btn" onclick="openPinModal()">
+        Unlock Government IDs
       </button>
 
-      <button class="SaveContacts note" onclick="saveAsNote()">
-      <span class="btn-text">Save as Note</span>
-      </button>
+      <!-- Government IDs Section -->
+      <section class="profile-section sensitive locked" id="govSection">
+        <h2>Government IDs</h2>
+        <div class="info-row"><span>SSS</span><span>3462641350</span></div>
+        <div class="info-row"><span>TIN</span><span>397420677000</span></div>
+        <div class="info-row"><span>PhilHealth</span><span>210254192952</span></div>
+        <div class="info-row"><span>Pag-IBIG</span><span>121182442001</span></div>
+      </section>
+
+      <!-- Buttons Container -->
+      <div class="action-buttons">
+        <button class="SaveContacts" onclick="saveContact(this)">
+          <span class="btn-text">Save Contacts</span>
+          <span class="btn-check">✓</span>
+        </button>
+        <button class="SaveContacts note" onclick="saveAsNote()">
+          <span class="btn-text">Save as Note</span>
+        </button>
+      </div>
+
     </section>
   </main>
 
 <script>
 
+const CORRECT_PIN = "1234";
+let attempts = 0;
+const MAX_ATTEMPTS = 5;
 
+// Sticky header
 const header = document.querySelector(".profile-header");
 window.addEventListener("scroll", () => {
   header.classList.toggle("is-sticky", window.scrollY > 10);
 });
 
-  
-const CONTACT_STORAGE_KEY = "contact_saved_v1";
+// Remove intro screen after 3.5s
+setTimeout(() => {
+  document.getElementById("introScreen")?.remove();
+}, 3500);
 
-document.addEventListener("DOMContentLoaded", () => {
-  const button = document.querySelector(".SaveContacts");
-  if (!button) return;
+// Open PIN modal
+function openPinModal() {
+  const pinOverlay = document.getElementById("pinOverlay");
+  const pinInput = document.getElementById("pinInput");
+  const pinError = document.getElementById("pinError");
 
-  if (localStorage.getItem(CONTACT_STORAGE_KEY) === "true") {
-    button.classList.add("saved");
-    button.querySelector(".btn-text").textContent = "Saved to Contacts";
-    button.disabled = true;
-    button.style.cursor = "default";
-  }
-});
-
-function saveContact(button) {
-  if (button.classList.contains("saved")) return;
-
-  const fullName = "Erick Yosorez Villafuerte";
-  const phone = "09633621187";
-  const email = "eyv.addleman@gmail.com";
-  const title = "HR Specialist";
-
-  const vCard = `
-BEGIN:VCARD
-VERSION:3.0
-N:Villafuerte;Erick Yosorez;;;
-FN:${fullName}
-TITLE:${title}
-TEL;TYPE=CELL:${phone}
-EMAIL:${email}
-END:VCARD
-`.trim();
-
-  const blob = new Blob([vCard], { type: "text/vcard;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "Erick_Villafuerte.vcf";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-
- 
-  localStorage.setItem(CONTACT_STORAGE_KEY, "true");
-
-  setTimeout(() => {
-    button.classList.add("saved");
-    button.querySelector(".btn-text").textContent = "Saved to Contacts";
-    button.disabled = true;
-    button.style.cursor = "default";
-  }, 400);
+  pinOverlay.style.display = "flex";
+  pinInput.value = "";
+  pinError.style.display = "none";
+  pinError.classList.remove("locked");
+  pinInput.disabled = false;
+  pinInput.focus();
 }
 
-function saveAsNote() {
-  const noteText = `
-Erick Yosorez Villafuerte
-HR Specialist
+// Close PIN modal
+function closePinModal() {
+  document.getElementById("pinOverlay").style.display = "none";
+}
 
-Mobile: 0963-362-1187
-Email: eyv.addleman@gmail.com
+// Verify PIN
+function verifyPin() {
+  const input = document.getElementById("pinInput");
+  const error = document.getElementById("pinError");
+  const modal = document.querySelector(".pin-modal");
 
-SSS: 3462641350
-TIN: 397420677000
-PhilHealth: 210254192952
-Pag-IBIG: 121182442001
-`.trim();
+  // LOCK AFTER MAX ATTEMPTS
+  if (attempts >= MAX_ATTEMPTS) {
+    error.textContent = "Too many attempts. Access locked.";
+    error.classList.add("locked");
+    error.style.display = "block";
+    input.disabled = true;
+    return;
+  }
 
-  const blob = new Blob([noteText], { type: "text/plain" });
-  const file = new File([blob], "Contact_Info.txt", { type: "text/plain" });
+  if (input.value === CORRECT_PIN) {
+    // ✅ Unlock government section
+    const govSection = document.getElementById("govSection");
+    govSection.classList.remove("locked");
+    govSection.classList.add("unlocked");
 
-  if (navigator.share) {
-    navigator.share({
-      title: "Contact Information",
-      text: noteText,
-      files: [file]
-    }).catch(() => {});
+    // 🔹 Unlock animation
+    govSection.style.animation = "none";
+    void govSection.offsetWidth; // reset animation
+    govSection.style.animation = "unlockSuccess 0.6s ease forwards";
+    govSection.classList.add("gov-glow");
+    setTimeout(() => govSection.classList.remove("gov-glow"), 1000);
+
+    // 🔹 Hide unlock button
+    const pinButton = document.querySelector(".pin-btn");
+    if (pinButton) pinButton.style.display = "none";
+
+    // 🔹 Show message
+    showGovMessage("Government IDs are now visible");
+
+    closePinModal();
+    attempts = 0;
+
   } else {
-    const textarea = document.createElement("textarea");
-    textarea.value = noteText;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-    alert("Copied. Paste into Notes.");
+    // ❌ Incorrect PIN
+    attempts++;
+    error.textContent = `Incorrect PIN. Try again (${MAX_ATTEMPTS - attempts} left)`;
+    error.style.display = "block";
+
+    // Shake animation
+    modal.classList.remove("shake");
+    void modal.offsetWidth; // reset animation
+    modal.classList.add("shake");
+
+    input.value = "";
+    input.focus();
   }
 }
+
+// Function to show temporary message
+function showGovMessage(message) {
+  const msg = document.createElement("div");
+  msg.textContent = message;
+  msg.className = "gov-message";
+
+  const wrapper = document.querySelector(".profile-wrapper");
+  wrapper.insertBefore(msg, wrapper.firstChild);
+
+  // Fade in
+  msg.style.opacity = 0;
+  msg.style.transition = "opacity 0.4s ease";
+  requestAnimationFrame(() => {
+    msg.style.opacity = 1;
+  });
+
+  // Remove after 2s
+  setTimeout(() => {
+    msg.style.opacity = 0;
+    setTimeout(() => msg.remove(), 400);
+  }, 2000);
+}
+
+
+
 </script>
 </body>
 </html>
