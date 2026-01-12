@@ -200,6 +200,12 @@ body {
   color: #d62121;
 }
 
+.info-row i {
+  margin-right: 8px;
+  color: #991b1b;
+}
+
+
 .helper-text {
   font-size: 0.75rem;
   color: #6b7280;
