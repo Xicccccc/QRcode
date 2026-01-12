@@ -19,6 +19,8 @@
   </div>
 
   <main class="profile-wrapper">
+    <hr class="header-divider">
+
     <section class="profile-card">
       <!-- Header -->
       <header class="profile-header">
@@ -33,7 +35,7 @@
       <!-- Contact Info -->
       <section class="profile-section">
         <h2>Contact Information</h2>
-        <div class="info-row"><span>Mobile</span><a href="tel:09633621187" id="mobile">0963-362-1187</a></div>
+        <div class="info-row"><span>📞 Mobile</span><a href="tel:09633621187" id="mobile">0963-362-1187</a></div>
         <div class="info-row"><span>Email</span><a href="mailto:eyv.addleman@gmail.com" id="email">eyv.addleman@gmail.com</a></div>
         <div class="info-row"><span>Facebook</span><a href="https://www.facebook.com/erick.villafuerte.790" id="facebook">Erick Yosorez Villafuerte</a></div>
         <div class="info-row"><span>Viber</span><a href="tel:09633621187" id="viber">0963-362-1187</a></div>
@@ -41,8 +43,11 @@
 
       <!-- Unlock Government IDs -->
       <div class="button-row">
-        <button class="SaveContacts pin-btn" onclick="openPinModal()">Unlock Government IDs</button>
+        <button class="SaveContacts pin-btn" onclick="openPinModal()">🔒 Unlock Government IDs</button>
       </div>
+      <p class="helper-text">
+  Protected by PIN for privacy
+</p>
 
       <!-- Government IDs -->
       <section class="profile-section sensitive locked" id="govSection">
@@ -67,7 +72,7 @@
     </section>
   </main>
 
-  <!-- PIN Modal -->
+  <!-- PIN  -->
   <div class="pin-overlay" id="pinOverlay">
     <div class="pin-modal">
       <h3>Enter 4-Digit PIN</h3>
@@ -92,7 +97,7 @@ window.addEventListener("scroll", () => {
 // Remove intro screen
 setTimeout(() => document.getElementById("introScreen")?.remove(), 3500);
 
-// Open PIN modal
+// Open PIN
 function openPinModal() {
   const pinOverlay = document.getElementById("pinOverlay");
   const pinInput = document.getElementById("pinInput");
@@ -106,7 +111,7 @@ function openPinModal() {
   pinInput.focus();
 }
 
-// Close PIN modal
+// Close PIN 
 function closePinModal() {
   document.getElementById("pinOverlay").style.display = "none";
 }
