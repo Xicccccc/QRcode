@@ -1,388 +1,251 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Professional Digital ID</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-pap6xG+0u4a6e2bN5N5kC+0i4eZ+Jxk5k3ogedp2hf1NYcZ8a7gYQ+l02zC2qXQ1A5O4jH2zw8kDfPnsRmlNqQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-content">
+      <img src="CAMSI.png" alt="Company Logo" class="intro-logo">
+      <h1>Good day!</h1>
+      <p>This is my contact details</p>
+    </div>
+  </div>
+
+  <main class="profile-wrapper">
+    <hr class="header-divider">
+
+    <section class="profile-card">
+      <header class="profile-header">
+        <h1>Click Aces Marketing Solutions Incorporated</h1>
+        <div class="avatar-container">
+          <img src="IMAHE.jpeg" alt="Profile Photo" class="avatar" id="profilePic">
+        </div>
+        <h1 id="fullName">Erick Yosorez Villafuerte</h1>
+        <span class="role" id="role">HR Specialist</span>
+      </header>
+
+      <section class="profile-section">
+        <h2>Contact Information</h2>
+        <div class="info-row"><span><i class="fas fa-phone"></i>Mobile</span><a href="tel:09633621187" id="mobile">0963-362-1187</a></div>
+        <div class="info-row"><span><i class="fas fa-envelope"></i>Email</span><a href="mailto:eyv.addleman@gmail.com" id="email">eyv.addleman@gmail.com</a></div>
+        <div class="info-row"><span><i class="fab fa-facebook"></i>Facebook</span><a href="https://www.facebook.com/erick.villafuerte.790" id="facebook">Erick Yosorez Villafuerte</a></div>
+        <div class="info-row"><span><i class="fab fa-viber"></i>Viber</span><a href="tel:09633621187" id="viber">0963-362-1187</a></div>
+        <div class="info-row"><span><i class="fab fa-whatsapp"></i>Whatsapp</span><a href="tel:09633621187" id="whatsapp">0963-362-1187</a></div>
+      </section>
+
+      <div class="button-row">
+        <button class="SaveContacts pin-btn" onclick="openPinModal()">🔒 Unlock Government IDs</button>
+      </div>
+      <p class="helper-text">Protected by PIN for privacy</p>
+
+      <section class="profile-section sensitive locked" id="govSection">
+        <h2>Government IDs</h2>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>SSS</span><span id="sss">3462641350</span></div>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>TIN</span><span id="tin">397420677000</span></div>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>PhilHealth</span><span id="philhealth">210254192952</span></div>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>Pag-IBIG</span><span id="pagibig">121182442001</span></div>
+      </section>
+
+      <div class="button-row">
+        <button class="SaveContacts" onclick="saveContact(this)">
+          <span class="btn-text">Save Contacts</span>
+          <span class="btn-check">✓</span>
+        </button>
+        <button class="SaveContacts note" onclick="saveAsNote()">
+          <span class="btn-text">Save as Note</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div class="pin-overlay" id="pinOverlay">
+    <div class="pin-modal">
+      <h3>Enter 4-Digit PIN</h3>
+      <input type="password" maxlength="4" inputmode="numeric" class="pin-input" id="pinInput" placeholder="••••"/>
+      <p class="pin-error" id="pinError">Incorrect PIN</p>
+      <button class="SaveContacts" onclick="verifyPin()">Unlock</button>
+      <button class="pin-cancel" onclick="closePinModal()">Cancel</button>
+    </div>
+  </div>
+
+<script>
+const CORRECT_PIN = "1234";
+let attempts = 0;
+const MAX_ATTEMPTS = 5;
+const header = document.querySelector(".profile-header");
+window.addEventListener("scroll", () => {
+  header.classList.toggle("is-sticky", window.scrollY > 10);
+});
+setTimeout(() => document.getElementById("introScreen")?.remove(), 3500);
+
+function openPinModal() {
+  const pinOverlay = document.getElementById("pinOverlay");
+  const pinInput = document.getElementById("pinInput");
+  const pinError = document.getElementById("pinError");
+  pinOverlay.style.display = "flex";
+  pinInput.value = "";
+  pinError.style.display = "none";
+  pinError.classList.remove("locked");
+  pinInput.disabled = false;
+  pinInput.focus();
 }
 
-body {
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; 
-  padding: 20px;
+function closePinModal() {
+  document.getElementById("pinOverlay").style.display = "none";
 }
 
-.profile-wrapper {
-  width: 100%;
-  max-width: 420px;
+function verifyPin() {
+  const input = document.getElementById("pinInput");
+  const error = document.getElementById("pinError");
+  const modal = document.querySelector(".pin-modal");
+  if (attempts >= MAX_ATTEMPTS) {
+    error.textContent = "Too many attempts. Access locked.";
+    error.classList.add("locked");
+    error.style.display = "block";
+    input.disabled = true;
+    return;
+  }
+  if (input.value === CORRECT_PIN) {
+    const govSection = document.getElementById("govSection");
+    govSection.classList.remove("locked");
+    govSection.classList.add("unlocked");
+    govSection.style.animation = "none";
+    void govSection.offsetWidth;
+    govSection.style.animation = "unlockSuccess 0.6s ease forwards";
+    govSection.classList.add("gov-glow");
+    setTimeout(() => govSection.classList.remove("gov-glow"), 1000);
+    const pinButton = document.querySelector(".pin-btn");
+    if (pinButton) pinButton.style.display = "none";
+    showGovMessage("Government IDs are now visible");
+    closePinModal();
+    attempts = 0;
+  } else {
+    attempts++;
+    error.textContent = `Incorrect PIN. Try again (${MAX_ATTEMPTS - attempts} left)`;
+    error.style.display = "block";
+    modal.classList.remove("shake");
+    void modal.offsetWidth;
+    modal.classList.add("shake");
+    input.value = "";
+    input.focus();
+  }
 }
 
-.profile-card {
-  background: #ffffff;
-  border-radius: 20px;
-  overflow: visible;
-  border: 1px solid rgb(176, 156, 156);
-  box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.18),
-    0 4px 12px rgba(0, 0, 0, 0.08);
+function showGovMessage(message) {
+  const msg = document.createElement("div");
+  msg.className = "gov-message";
+  msg.textContent = message;
+  document.body.appendChild(msg);
+  msg.style.opacity = 0;
+  msg.style.transform = "translate(-50%, -50%) scale(0.8)";
+  requestAnimationFrame(() => {
+    msg.style.opacity = 1;
+    msg.style.transform = "translate(-50%, -50%) scale(1)";
+  });
+  setTimeout(() => {
+    msg.style.opacity = 0;
+    msg.style.transform = "translate(-50%, -50%) scale(0.8)";
+    setTimeout(() => msg.remove(), 400);
+  }, 2000);
 }
 
-.profile-header {
-  position: sticky; 
-  top: 0;
-  z-index: 10;
-  background-image: url("LOGS.png"); 
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover; 
-  color: #000;
-  text-align: center;
-  padding: 50px 20px 40px; 
-  padding-top: 1px; 
-  padding-bottom: 50px;
+function imageToBase64(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function() {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      const dataURL = canvas.toDataURL("image/jpeg");
+      const base64 = dataURL.split(",")[1];
+      resolve(base64);
+    };
+    img.onerror = function() { resolve(""); }
+    img.src = url;
+  });
 }
 
-.profile-header.is-sticky {
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+async function saveContact(button) {
+  const fullName = document.getElementById("fullName").textContent;
+  const role = document.getElementById("role").textContent;
+  const mobile = document.getElementById("mobile").textContent;
+  const email = document.getElementById("email").textContent;
+  const facebook = document.getElementById("facebook").textContent;
+  const viber = document.getElementById("viber").textContent;
+  const profilePic = document.getElementById("profilePic");
+  const base64Image = await imageToBase64(profilePic.src);
+  const govSection = document.getElementById("govSection");
+  let sss = "", tin = "", philhealth = "", pagibig = "";
+  if (!govSection.classList.contains("locked")) {
+    sss = document.getElementById("sss").textContent;
+    tin = document.getElementById("tin").textContent;
+    philhealth = document.getElementById("philhealth").textContent;
+    pagibig = document.getElementById("pagibig").textContent;
+  }
+  const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${fullName}
+N:${fullName};;;;
+ORG:${role}
+TEL;TYPE=CELL:${mobile}
+TEL;TYPE=VIBER:${viber}
+EMAIL;TYPE=INTERNET:${email}
+PHOTO;ENCODING=b;TYPE=JPEG:${base64Image}
+NOTE:Facebook: ${facebook}${sss ? `\\nSSS: ${sss}\\nTIN: ${tin}\\nPhilHealth: ${philhealth}\\nPag-IBIG: ${pagibig}` : ""}
+END:VCARD`;
+  const blob = new Blob([vCard], { type: "text/vcard" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${fullName.replace(/\s+/g,'_')}.vcf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  button.classList.add("saved");
+  setTimeout(() => button.classList.remove("saved"), 1500);
 }
 
-.profile-header::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(153, 27, 27, 0.78),   
-    rgba(255, 255, 255, 0.88)
-  );
-  z-index: 0;
+function saveAsNote() {
+  const fullName = document.getElementById("fullName").textContent;
+  const role = document.getElementById("role").textContent;
+  const mobile = document.getElementById("mobile").textContent;
+  const viber = document.getElementById("viber").textContent;
+  const email = document.getElementById("email").textContent;
+  const facebook = document.getElementById("facebook").textContent;
+  const govSection = document.getElementById("govSection");
+  let govInfo = "";
+  if (!govSection.classList.contains("locked")) {
+    const sss = document.getElementById("sss").textContent;
+    const tin = document.getElementById("tin").textContent;
+    const philhealth = document.getElementById("philhealth").textContent;
+    const pagibig = document.getElementById("pagibig").textContent;
+    govInfo = `\nSSS: ${sss}\nTIN: ${tin}\nPhilHealth: ${philhealth}\nPag-IBIG: ${pagibig}`;
+  }
+  const noteText = `Name: ${fullName}
+Role: ${role}
+Mobile: ${mobile}
+Viber: ${viber}
+Email: ${email}
+Facebook: ${facebook}${govInfo}`;
+  const blob = new Blob([noteText], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${fullName.replace(/\s+/g,'_')}_note.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
 }
-
-.header-divider {
-  width: 60px;
-  margin: 12px auto;
-  border: none;
-  height: 2px;
-  background: rgba(255,255,255,0.6);
-}
-
-
-.profile-header h1{
-  margin-top: 60px;
-}
-
-.profile-header * {
-  position: relative;
-  z-index: 1;
-}
-
-.profile-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-}
-
-.header-logo {
-  width: 160px;
-  margin: 0 auto 12px;
-  display: block;
-}
-
-.avatar-container {
-  width: 140px;
-  height: 140px;
-  margin: 0 auto 15px;
-  position: relative;
-  top: 30px;
-}
-
-.avatar {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 4px solid white;
-  object-fit: cover;
-  z-index: 1;
-  position: relative;
-}
-
-.avatar-container::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    #facc15,   
-    #dc2626    
-  );
-  z-index: 0;
-}
-
-.profile-header h1 {
-  font-size: 1.55rem;
-  font-weight: 700;
-  margin-top: 50px;
-  text-shadow: 4px 2px 6px rgba(90, 79, 79, 0.671);
-}
-
-.role {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #000000;
-}
-
-.profile-section {
-  padding: 22px;
-}
-
-.profile-section h2 {
-  font-size: 0.75rem;
-  letter-spacing: 2px;
-  font-weight: 700;
-  color: #991b1b;
-  position: relative;
-  padding-bottom: 8px;
-}
-
-.profile-section h2::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 42px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    #991b1b,
-    #facc15
-  );
-  border-radius: 2px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  margin-top: 10px;
-  font-size: 0.95rem;
-  background: #ffffff;
-  border-radius: 10px;
-  border-left: 4px solid #991b1b;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.info-row:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(153, 27, 27, 0.25);
-}
-
-.info-row span:first-child {
-  color: #000000;
-  font-weight: 500;
-}
-
-.info-row span:last-child,
-.info-row a {
-  color: #111827;
-  font-weight: 600;
-  text-align: right;
-  text-decoration: none;
-}
-
-.info-row a:hover {
-  color: #d62121;
-}
-
-.info-row i {
-  margin-right: 8px;
-  color: #991b1b;
-}
-
-
-.helper-text {
-  font-size: 0.75rem;
-  color: #6b7280;
-  text-align: center;
-  margin-top: -10px;
-}
-
-
-.SaveContacts {
-  max-width: calc(70% - 40px);
-  margin: 0px auto 5px;
-  display: block;
-  padding: 12px;
-  border-radius: 999px;
-  border: none;
-  background: linear-gradient(135deg, #991b1b, #dc2626);
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  box-shadow: 0 6px 16px rgba(153, 27, 27, 0.35);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.SaveContacts:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(153, 27, 27, 0.45);
-}
-
-.btn-text {
-  transition: opacity 0.2s ease;
-}
-
-.btn-check {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  font-weight: 700;
-  opacity: 0;
-  transform: scale(0.6);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.SaveContacts.saved {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  box-shadow: 0 8px 22px rgba(34, 197, 94, 0.45);
-}
-
-.SaveContacts.saved .btn-text {
-  opacity: 0;
-}
-
-.SaveContacts.saved .btn-check {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.SaveContacts.note {
-  background: white;
-  color: #991b1b;
-  border: 2px solid #991b1b;
-}
-
-.button-row {
-  bottom: 12px;
-  background: white;
-  padding: 0px;
-  z-index: 20;
-}
-
-
-@media (max-width: 480px) {
-  body { padding: 12px; }
-  .profile-header { padding: 35px 16px; }
-  .header-logo { width: 120px; }
-  .avatar-container { width: 90px; height: 90px; }
-  .profile-header h1 { font-size: 1.25rem; }
-  .info-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .info-row span:last-child,
-  .info-row a { text-align: left; font-size: 0.9rem; }
-}
-
-/* INTRO SCREEN */
-.intro-screen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #991b1b, #dc2626);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: introFadeOut 0.8s ease forwards;
-  animation-delay: 2.8s;
-}
-
-.intro-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color: white;
-  animation: introText 1.2s ease forwards;
-}
-
-.intro-content h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
-.intro-content p { font-size: 1rem; opacity: 0.9; }
-
-@keyframes introText { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
-@keyframes introFadeOut { to {opacity:0; visibility:hidden;} }
-
-.profile-wrapper { opacity: 0; transform: translateY(20px); animation: profileReveal 0.8s ease forwards; animation-delay: 2.8s; }
-@keyframes profileReveal { to {opacity:1; transform:translateY(0);} }
-
-.intro-logo { width: 140px; height: auto; margin-bottom:16px; display:block; animation: logoPop 1.2s ease forwards; }
-@keyframes logoPop { 0% {opacity:0; transform:scale(0.6);} 60% {opacity:1; transform:scale(1.05);} 100% {transform:scale(1);} }
-
-/* LOCKED GOVERNMENT SECTION */
-.sensitive.locked { display: none; }
-
-/* PIN OVERLAY */
-.pin-overlay {
-  position: fixed; inset:0;
-  background: rgba(15,23,42,0.75);
-  backdrop-filter: blur(6px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-}
-
-.pin-modal {
-  background: white;
-  width: 90%;
-  max-width: 320px;
-  padding: 24px;
-  border-radius: 18px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-.pin-modal h3 { margin-bottom:12px; font-size:1.1rem; font-weight:700; color:#991b1b; }
-.pin-input { width:100%; padding:12px; font-size:1.4rem; text-align:center; letter-spacing:10px; border-radius:10px; border:1px solid #ccc; margin-bottom:10px; }
-.pin-error { color:#dc2626; font-size:0.85rem; display:none; margin-bottom:10px; }
-.pin-cancel { background:none; border:none; margin-top:10px; color:#6b7280; cursor:pointer; }
-
-@keyframes unlockSuccess { 0% {opacity:0; transform:scale(0.9);} 50% {opacity:1; transform:scale(1.05);} 100% {opacity:1; transform:scale(1);} }
-.sensitive.unlocked { animation: unlockSuccess 0.6s ease forwards; }
-
-@keyframes shake { 0%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} 100%{transform:translateX(0);} }
-.pin-modal.shake { animation:shake 0.4s ease; }
-.pin-error.locked { color:#991b1b; font-weight:600; }
-
-.gov-glow { animation: glowEffect 1s ease forwards; }
-@keyframes glowEffect { 0%{box-shadow:0 0 0px #22c55e;} 50%{box-shadow:0 0 20px #22c55e;} 100%{box-shadow:0 0 0px #22c55e;} }
-
-.button-row { display:flex; justify-content:space-between; gap:12px; margin:20px 0; flex-wrap:wrap; }
-.button-row .SaveContacts { flex:1; min-width:140px; }
-
-.gov-message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #16a34a;
-  color: white;
-  padding: 16px 24px;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  font-weight: 600;
-  font-size: 1rem;
-  z-index: 9999;
-  pointer-events: none;
-  text-align: center;
-}
+</script>
+</body>
+</html>
