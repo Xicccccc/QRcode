@@ -14,7 +14,6 @@ body {
   padding: 20px;
 }
 
-
 .profile-wrapper {
   width: 100%;
   max-width: 420px;
@@ -45,10 +44,6 @@ body {
   padding-bottom: 50px;
 }
 
-
-
-
-
 .profile-header.is-sticky {
   box-shadow: 0 4px 14px rgba(0,0,0,0.15);
 }
@@ -65,7 +60,6 @@ body {
   z-index: 0;
 }
 
-
 .profile-header * {
   position: relative;
   z-index: 1;
@@ -75,8 +69,6 @@ body {
   transform: translateY(-4px);
   box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
-
-
 
 .header-logo {
   width: 160px;
@@ -130,7 +122,6 @@ body {
   color: #000000;
 }
 
-
 .profile-section {
   padding: 22px;
 }
@@ -159,7 +150,6 @@ body {
   border-radius: 2px;
 }
 
-
 .info-row {
   display: flex;
   justify-content: space-between;
@@ -168,14 +158,10 @@ body {
   margin-bottom: 12px;
   margin-top: 10px;
   font-size: 0.95rem;
-
   background: #ffffff;
   border-radius: 10px;
   border-left: 4px solid #991b1b;
-
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.08);
-
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -183,7 +169,6 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(153, 27, 27, 0.25);
 }
-
 
 .info-row span:first-child {
   color: #000000;
@@ -203,43 +188,28 @@ body {
 }
 
 .SaveContacts {
-  width: calc(100% - 40px);
-  margin: 20px auto 25px;
+  max-width: calc(70% - 40px);
+  margin: 0px auto 5px;
   display: block;
-
   padding: 12px;
   border-radius: 999px;
-
   border: none;
-  background: linear-gradient(
-    135deg,
-    #991b1b,
-    #dc2626
-  );
-
+  background: linear-gradient(135deg, #991b1b, #dc2626);
   color: white;
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-
-  box-shadow:
-    0 6px 16px rgba(153, 27, 27, 0.35);
-
+  box-shadow: 0 6px 16px rgba(153, 27, 27, 0.35);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.SaveContacts:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 10px 26px rgba(153, 27, 27, 0.45);
-}
-
-.SaveContacts {
   position: relative;
   overflow: hidden;
 }
 
+.SaveContacts:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(153, 27, 27, 0.45);
+}
 
 .btn-text {
   transition: opacity 0.2s ease;
@@ -251,15 +221,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 1.4rem;
   font-weight: 700;
   opacity: 0;
   transform: scale(0.6);
-
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
-
 
 .SaveContacts.saved {
   background: linear-gradient(135deg, #16a34a, #22c55e);
@@ -275,40 +242,15 @@ body {
   transform: scale(1);
 }
 
-
 @media (max-width: 480px) {
-  body {
-    padding: 12px;
-  }
-
-  .profile-header {
-    padding: 35px 16px;
-  }
-
-  .header-logo {
-    width: 120px;
-  }
-
-  .avatar-container {
-    width: 90px;
-    height: 90px;
-  }
-
-  .profile-header h1 {
-    font-size: 1.25rem;
-  }
-
-  .info-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
+  body { padding: 12px; }
+  .profile-header { padding: 35px 16px; }
+  .header-logo { width: 120px; }
+  .avatar-container { width: 90px; height: 90px; }
+  .profile-header h1 { font-size: 1.25rem; }
+  .info-row { flex-direction: column; align-items: flex-start; gap: 4px; }
   .info-row span:last-child,
-  .info-row a {
-    text-align: left;
-    font-size: 0.9rem;
-  }
+  .info-row a { text-align: left; font-size: 0.9rem; }
 }
 
 /* INTRO SCREEN */
@@ -333,87 +275,25 @@ body {
   animation: introText 1.2s ease forwards;
 }
 
-.intro-content h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
+.intro-content h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+.intro-content p { font-size: 1rem; opacity: 0.9; }
 
-.intro-content p {
-  font-size: 1rem;
-  opacity: 0.9;
-}
+@keyframes introText { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+@keyframes introFadeOut { to {opacity:0; visibility:hidden;} }
 
+.profile-wrapper { opacity: 0; transform: translateY(20px); animation: profileReveal 0.8s ease forwards; animation-delay: 2.8s; }
+@keyframes profileReveal { to {opacity:1; transform:translateY(0);} }
 
-@keyframes introText {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes introFadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-.profile-wrapper {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: profileReveal 0.8s ease forwards;
-  animation-delay: 2.8s;
-}
-
-@keyframes profileReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.intro-logo {
-  width: 140px;
-  height: auto;
-  margin-bottom: 16px;
-  display: block;
-  animation: logoPop 1.2s ease forwards;
-}
-
-
-
-
-/* LOGO ANIMATION */
-@keyframes logoPop {
-  0% {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
+.intro-logo { width: 140px; height: auto; margin-bottom:16px; display:block; animation: logoPop 1.2s ease forwards; }
+@keyframes logoPop { 0% {opacity:0; transform:scale(0.6);} 60% {opacity:1; transform:scale(1.05);} 100% {transform:scale(1);} }
 
 /* LOCKED GOVERNMENT SECTION */
-.sensitive.locked {
-  display: none;
-}
+.sensitive.locked { display: none; }
 
 /* PIN OVERLAY */
 .pin-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.75);
+  position: fixed; inset:0;
+  background: rgba(15,23,42,0.75);
   backdrop-filter: blur(6px);
   display: none;
   align-items: center;
@@ -431,140 +311,25 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-.pin-modal h3 {
-  margin-bottom: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #991b1b;
-}
+.pin-modal h3 { margin-bottom:12px; font-size:1.1rem; font-weight:700; color:#991b1b; }
+.pin-input { width:100%; padding:12px; font-size:1.4rem; text-align:center; letter-spacing:10px; border-radius:10px; border:1px solid #ccc; margin-bottom:10px; }
+.pin-error { color:#dc2626; font-size:0.85rem; display:none; margin-bottom:10px; }
+.pin-cancel { background:none; border:none; margin-top:10px; color:#6b7280; cursor:pointer; }
 
-.pin-input {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.4rem;
-  text-align: center;
-  letter-spacing: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-}
+@keyframes unlockSuccess { 0% {opacity:0; transform:scale(0.9);} 50% {opacity:1; transform:scale(1.05);} 100% {opacity:1; transform:scale(1);} }
+.sensitive.unlocked { animation: unlockSuccess 0.6s ease forwards; }
 
-.pin-error {
-  color: #dc2626;
-  font-size: 0.85rem;
-  display: none;
-  margin-bottom: 10px;
-}
+@keyframes shake { 0%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} 100%{transform:translateX(0);} }
+.pin-modal.shake { animation:shake 0.4s ease; }
+.pin-error.locked { color:#991b1b; font-weight:600; }
 
-.pin-cancel {
-  background: none;
-  border: none;
-  margin-top: 10px;
-  color: #6b7280;
-  cursor: pointer;
-}
+.gov-glow { animation: glowEffect 1s ease forwards; }
+@keyframes glowEffect { 0%{box-shadow:0 0 0px #22c55e;} 50%{box-shadow:0 0 20px #22c55e;} 100%{box-shadow:0 0 0px #22c55e;} }
 
+.button-row { display:flex; justify-content:space-between; gap:12px; margin:20px 0; flex-wrap:wrap; }
+.button-row .SaveContacts { flex:1; min-width:140px; }
 
-/* SUCCESS UNLOCK ANIMATION */
-@keyframes unlockSuccess {
-  0% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.sensitive.unlocked {
-  animation: unlockSuccess 0.6s ease forwards;
-}
-
-/* WRONG PIN SHAKE */
-@keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-  100% { transform: translateX(0); }
-}
-
-.pin-modal.shake {
-  animation: shake 0.4s ease;
-}
-
-/* LOCKOUT MESSAGE */
-.pin-error.locked {
-  color: #991b1b;
-  font-weight: 600;
-}
-
-/* UNLOCK ANIMATION */
-@keyframes unlockSuccess {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Optional: glowing effect for a moment */
-.gov-glow {
-  animation: glowEffect 1s ease forwards;
-}
-
-@keyframes glowEffect {
-  0% {
-    box-shadow: 0 0 0px #22c55e;
-  }
-  50% {
-    box-shadow: 0 0 20px #22c55e;
-  }
-  100% {
-    box-shadow: 0 0 0px #22c55e;
-  }
-}
-
-.button-row {
-  display: flex;
-  justify-content: space-between; /* Space between buttons */
-  gap: 12px; /* Gap for smaller screens */
-  margin: 20px 0;
-  flex-wrap: wrap; /* Wrap buttons on very small screens */
-}
-
-.button-row .SaveContacts {
-  flex: 1; /* Make buttons take equal width */
-  min-width: 140px; /* Minimum width for tiny screens */
-}
-
-    
-
-    /* --- UNLOCK ANIMATION --- */
-    @keyframes unlockSuccess {
-      0% { transform: scale(0.95); opacity: 0; }
-      50% { transform: scale(1.05); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .gov-glow {
-      box-shadow: 0 0 18px 4px #16a34a;
-      transition: box-shadow 0.3s ease;
-    }
-
- .gov-message {
+.gov-message {
   position: fixed;
   top: 50%;
   left: 50%;
