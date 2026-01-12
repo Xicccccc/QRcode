@@ -6,10 +6,10 @@
   <title>Professional Digital ID</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="Style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-pap6xG+0u4a6e2bN5N5kC+0i4eZ+Jxk5k3ogedp2hf1NYcZ8a7gYQ+l02zC2qXQ1A5O4jH2zw8kDfPnsRmlNqQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-  <!-- Intro Screen -->
   <div class="intro-screen" id="introScreen">
     <div class="intro-content">
       <img src="CAMSI.png" alt="Company Logo" class="intro-logo">
@@ -22,7 +22,6 @@
     <hr class="header-divider">
 
     <section class="profile-card">
-      <!-- Header -->
       <header class="profile-header">
         <h1>Click Aces Marketing Solutions Incorporated</h1>
         <div class="avatar-container">
@@ -32,33 +31,28 @@
         <span class="role" id="role">HR Specialist</span>
       </header>
 
-      <!-- Contact Info -->
       <section class="profile-section">
         <h2>Contact Information</h2>
-        <div class="info-row"><span>📞 Mobile</span><a href="tel:09633621187" id="mobile">0963-362-1187</a></div>
-        <div class="info-row"><span>Email</span><a href="mailto:eyv.addleman@gmail.com" id="email">eyv.addleman@gmail.com</a></div>
-        <div class="info-row"><span>Facebook</span><a href="https://www.facebook.com/erick.villafuerte.790" id="facebook">Erick Yosorez Villafuerte</a></div>
-        <div class="info-row"><span>Viber</span><a href="tel:09633621187" id="viber">0963-362-1187</a></div>
+        <div class="info-row"><span><i class="fas fa-phone"></i>Mobile</span><a href="tel:09633621187" id="mobile">0963-362-1187</a></div>
+        <div class="info-row"><span><i class="fas fa-envelope"></i>Email</span><a href="mailto:eyv.addleman@gmail.com" id="email">eyv.addleman@gmail.com</a></div>
+        <div class="info-row"><span><i class="fab fa-facebook"></i>Facebook</span><a href="https://www.facebook.com/erick.villafuerte.790" id="facebook">Erick Yosorez Villafuerte</a></div>
+        <div class="info-row"><span><i class="fab fa-viber"></i>Viber</span><a href="tel:09633621187" id="viber">0963-362-1187</a></div>
+        <div class="info-row"><span><i class="fab fa-whatsapp"></i>Whatsapp</span><a href="tel:09633621187" id="whatsapp">0963-362-1187</a></div>
       </section>
 
-      <!-- Unlock Government IDs -->
       <div class="button-row">
         <button class="SaveContacts pin-btn" onclick="openPinModal()">🔒 Unlock Government IDs</button>
       </div>
-      <p class="helper-text">
-  Protected by PIN for privacy
-</p>
+      <p class="helper-text">Protected by PIN for privacy</p>
 
-      <!-- Government IDs -->
       <section class="profile-section sensitive locked" id="govSection">
         <h2>Government IDs</h2>
-        <div class="info-row"><span>SSS</span><span id="sss">3462641350</span></div>
-        <div class="info-row"><span>TIN</span><span id="tin">397420677000</span></div>
-        <div class="info-row"><span>PhilHealth</span><span id="philhealth">210254192952</span></div>
-        <div class="info-row"><span>Pag-IBIG</span><span id="pagibig">121182442001</span></div>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>SSS</span><span id="sss">3462641350</span></div>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>TIN</span><span id="tin">397420677000</span></div>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>PhilHealth</span><span id="philhealth">210254192952</span></div>
+        <div class="info-row"><span><i class="fas fa-id-card"></i>Pag-IBIG</span><span id="pagibig">121182442001</span></div>
       </section>
 
-      <!-- Action Buttons -->
       <div class="button-row">
         <button class="SaveContacts" onclick="saveContact(this)">
           <span class="btn-text">Save Contacts</span>
@@ -68,11 +62,9 @@
           <span class="btn-text">Save as Note</span>
         </button>
       </div>
-
     </section>
   </main>
 
-  <!-- PIN  -->
   <div class="pin-overlay" id="pinOverlay">
     <div class="pin-modal">
       <h3>Enter 4-Digit PIN</h3>
@@ -87,22 +79,16 @@
 const CORRECT_PIN = "1234";
 let attempts = 0;
 const MAX_ATTEMPTS = 5;
-
-// Sticky header
 const header = document.querySelector(".profile-header");
 window.addEventListener("scroll", () => {
   header.classList.toggle("is-sticky", window.scrollY > 10);
 });
-
-// Remove intro screen
 setTimeout(() => document.getElementById("introScreen")?.remove(), 3500);
 
-// Open PIN
 function openPinModal() {
   const pinOverlay = document.getElementById("pinOverlay");
   const pinInput = document.getElementById("pinInput");
   const pinError = document.getElementById("pinError");
-
   pinOverlay.style.display = "flex";
   pinInput.value = "";
   pinError.style.display = "none";
@@ -111,17 +97,14 @@ function openPinModal() {
   pinInput.focus();
 }
 
-// Close PIN 
 function closePinModal() {
   document.getElementById("pinOverlay").style.display = "none";
 }
 
-// Verify PIN
 function verifyPin() {
   const input = document.getElementById("pinInput");
   const error = document.getElementById("pinError");
   const modal = document.querySelector(".pin-modal");
-
   if (attempts >= MAX_ATTEMPTS) {
     error.textContent = "Too many attempts. Access locked.";
     error.classList.add("locked");
@@ -129,22 +112,17 @@ function verifyPin() {
     input.disabled = true;
     return;
   }
-
   if (input.value === CORRECT_PIN) {
     const govSection = document.getElementById("govSection");
     govSection.classList.remove("locked");
     govSection.classList.add("unlocked");
-
-    // Unlock animation
     govSection.style.animation = "none";
     void govSection.offsetWidth;
     govSection.style.animation = "unlockSuccess 0.6s ease forwards";
     govSection.classList.add("gov-glow");
     setTimeout(() => govSection.classList.remove("gov-glow"), 1000);
-
     const pinButton = document.querySelector(".pin-btn");
     if (pinButton) pinButton.style.display = "none";
-
     showGovMessage("Government IDs are now visible");
     closePinModal();
     attempts = 0;
@@ -160,7 +138,6 @@ function verifyPin() {
   }
 }
 
-// Centered unlock message
 function showGovMessage(message) {
   const msg = document.createElement("div");
   msg.className = "gov-message";
@@ -179,7 +156,6 @@ function showGovMessage(message) {
   }, 2000);
 }
 
-// Convert image to Base64
 function imageToBase64(url) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -199,7 +175,6 @@ function imageToBase64(url) {
   });
 }
 
-// Save contact as VCF
 async function saveContact(button) {
   const fullName = document.getElementById("fullName").textContent;
   const role = document.getElementById("role").textContent;
@@ -208,10 +183,7 @@ async function saveContact(button) {
   const facebook = document.getElementById("facebook").textContent;
   const viber = document.getElementById("viber").textContent;
   const profilePic = document.getElementById("profilePic");
-
   const base64Image = await imageToBase64(profilePic.src);
-
-  // Include Government IDs if unlocked
   const govSection = document.getElementById("govSection");
   let sss = "", tin = "", philhealth = "", pagibig = "";
   if (!govSection.classList.contains("locked")) {
@@ -220,7 +192,6 @@ async function saveContact(button) {
     philhealth = document.getElementById("philhealth").textContent;
     pagibig = document.getElementById("pagibig").textContent;
   }
-
   const vCard = `BEGIN:VCARD
 VERSION:3.0
 FN:${fullName}
@@ -232,7 +203,6 @@ EMAIL;TYPE=INTERNET:${email}
 PHOTO;ENCODING=b;TYPE=JPEG:${base64Image}
 NOTE:Facebook: ${facebook}${sss ? `\\nSSS: ${sss}\\nTIN: ${tin}\\nPhilHealth: ${philhealth}\\nPag-IBIG: ${pagibig}` : ""}
 END:VCARD`;
-
   const blob = new Blob([vCard], { type: "text/vcard" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -241,12 +211,10 @@ END:VCARD`;
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
-
   button.classList.add("saved");
   setTimeout(() => button.classList.remove("saved"), 1500);
 }
 
-// Save as Note
 function saveAsNote() {
   const fullName = document.getElementById("fullName").textContent;
   const role = document.getElementById("role").textContent;
@@ -254,8 +222,6 @@ function saveAsNote() {
   const viber = document.getElementById("viber").textContent;
   const email = document.getElementById("email").textContent;
   const facebook = document.getElementById("facebook").textContent;
-
-  // Include Government IDs if unlocked
   const govSection = document.getElementById("govSection");
   let govInfo = "";
   if (!govSection.classList.contains("locked")) {
@@ -265,14 +231,12 @@ function saveAsNote() {
     const pagibig = document.getElementById("pagibig").textContent;
     govInfo = `\nSSS: ${sss}\nTIN: ${tin}\nPhilHealth: ${philhealth}\nPag-IBIG: ${pagibig}`;
   }
-
   const noteText = `Name: ${fullName}
 Role: ${role}
 Mobile: ${mobile}
 Viber: ${viber}
 Email: ${email}
 Facebook: ${facebook}${govInfo}`;
-
   const blob = new Blob([noteText], { type: "text/plain" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
